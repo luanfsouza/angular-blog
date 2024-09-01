@@ -3,9 +3,70 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
+  flex-wrap: wrap;
+  
 }
-header{
+.container__main{
+  
+}
+
+header {
   display: flex;
   justify-content: center;
   margin-top: 20px;
+  
+}
+.container__movies .cards__movies {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(1, 1fr);
+  gap: 8px;
+  
+}
+.container__movies  *{
+  background-color: #ffffff;
+  padding: 0 10px;
+  
+}
+.title__movies h1{
+  padding: 0;
+  color: black;
+}
+@media (max-width: 991.98px) {
+  .container__articles > .articles__main,
+  .articles__others {
+    width: 100%;
+  }
+  .container__movies .cards__movies {
+    grid-template-columns: repeat(2, 1fr);
+    //gap: 20px;
+    
+  }
+  
+  .container__movies {
+    padding: 0 20px;
+    
+    
+  }
+}
+// .teste{
+//   width: 100%;
+// }
+@media (max-width: 767.98px){
+  .container__movies .cards__movies {
+    grid-template-columns: repeat(2, 50%);
+  }
+  .container__movies  *{
+    padding: 0;
+    
+  }
+  .cards__movies {
+    padding: 0;
+  }
+  .container__movies {
+    padding: 0 ;
+    
+    
+  }
+  
 }

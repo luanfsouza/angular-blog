@@ -1,37 +1,51 @@
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Component, Input } from '@angular/core';
+import {
+  HttpClient,
+  HttpClientModule,
+  provideHttpClient,
+} from '@angular/common/http';
 
+import { CommonModule } from '@angular/common';
+import { Marvel } from '../../model/interface';
+import { Observable } from 'rxjs';
 import { dataFake } from '../../repository/dataFake';
 
 @Component({
   selector: 'app-content',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, CommonModule],
   templateUrl: './content.component.html',
   styleUrl: './content.component.scss',
 })
 export class ContentComponent {
-  photoCover: string =
-    'data:image/jpeg;base64,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';
+  photoCover: string = 'https://drive.google.com/thumbnail?sz=w1000&id=14p-EvYCctAIgefcCCtzij0WKuK4BPxKn';
   contentTitle: string = 'MINHA NOTICIA';
-  contentDesription: string = 'Lorem ipsom';
+  contentDesription: string = 'Lorem ipsomd';
   private id: string | null = '0';
+  arrayResult: Marvel[] = [];
 
-  constructor(private route: ActivatedRoute) {}
-  ngOnInit(): void {
-    this.route.paramMap.subscribe((value) =>
-      this.id = value.get('id')
-    );
-    this.setValuesToComponent(this.id)
+  public marvel$!: Observable<Marvel[]>;
+  constructor(private route: ActivatedRoute, private http: HttpClient) {
+    
   }
-  setValuesToComponent(id:string | null){
-    const result = dataFake.filter(article => article.id == id)[0]
-    console.log(result.title)
-    this.contentTitle = result.title
-    this.contentDesription = result.description
-    this.photoCover = result.photoCover
-    // if(!result){
-    //   this.contentTitle = result.title
-    // }
+  ngOnInit(): void {
+    this.marvel$ = this.http.get<Marvel[]>('http://localhost:8080/marvel');
+    this.route.paramMap.subscribe((value) => (this.id = value.get('id')));
+    this.marvel$.subscribe({
+      next: (resposta) => {
+        this.arrayResult = resposta.filter(
+          (item) => item.id.toString() == this.id
+        );
+        this.contentTitle = this.arrayResult[0].title;
+        this.contentDesription = this.arrayResult[0].description;
+        this.photoCover = this.arrayResult[0].photoUrl;
+      },
+      error: (err) => console.log(err),
+    });
+  }
+
+  setValuesToComponent(id: string | null): Observable<Marvel[]> {
+    return this.http.get<Marvel[]>('http://localhost:8080/marvel');
   }
 }

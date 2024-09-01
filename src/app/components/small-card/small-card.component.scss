@@ -20,3 +20,32 @@
 .container__small-card-separator{
   margin-top: 10px;
 }
+@media (max-width: 991.98px){
+  .container__small-card {
+    width: 100%;
+    padding: 10px 15px;
+  }
+  .container__small-card-content{
+    flex-direction: row-reverse;
+  }
+}
+@media (max-width: 767.98px){
+  .container__small-card {
+    width: 100%;
+    
+  }
+  .container__small-card-content{
+    padding: 0 10px;
+  }
+  .small-card__photo {
+    max-width: 40%;
+    
+  }
+  .small-card__photo img{
+    width: 100%;;
+    height: 100%;
+  }
+  .small-card__title h1{
+    font-size: 1.2rem
+  }
+}

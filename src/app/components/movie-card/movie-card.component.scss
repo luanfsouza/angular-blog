@@ -1,0 +1,41 @@
+*{
+  background-color: #ffffff;
+  color: black;
+}
+.card__movie {
+  width: fit-content;
+  width: 200px;
+
+}
+.photo_card__movie {
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 500px;
+}
+.title_card__movie {
+  word-wrap: break-word;
+  font-size: 10px;
+  padding: 10px;
+}
+@media (max-width: 991.98px) {
+  .card__movie {
+    width: 100%;
+    background-color: red;
+    
+  }
+
+  .photo_card__movie {
+    
+    height: 350px;
+  }
+}
+@media (max-width: 767.98px){
+  .photo_card__movie {
+    
+    height:200px;
+  }
+  // .title_card__movie {
+  //   padding: 0;
+  // }
+}
