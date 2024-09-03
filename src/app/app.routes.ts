@@ -1,5 +1,5 @@
 import { ContentComponent } from './pages/content/content.component';
-import { Routes } from '@angular/router';
+import { Routes } from '@angular/router'
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },

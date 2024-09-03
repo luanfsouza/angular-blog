@@ -1,15 +1,10 @@
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Component, Input } from '@angular/core';
-import {
-  HttpClient,
-  HttpClientModule,
-  provideHttpClient,
-} from '@angular/common/http';
 
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { ContentServiceService } from '../../service/content-service.service';
+import { HttpClient } from '@angular/common/http';
 import { Marvel } from '../../model/interface';
-import { Observable } from 'rxjs';
-import { dataFake } from '../../repository/dataFake';
 
 @Component({
   selector: 'app-content',
@@ -19,33 +14,52 @@ import { dataFake } from '../../repository/dataFake';
   styleUrl: './content.component.scss',
 })
 export class ContentComponent {
-  photoCover: string = 'https://drive.google.com/thumbnail?sz=w1000&id=14p-EvYCctAIgefcCCtzij0WKuK4BPxKn';
+  
+  photoCover: string =
+    'https://drive.google.com/thumbnail?sz=w1000&id=14p-EvYCctAIgefcCCtzij0WKuK4BPxKn';
   contentTitle: string = 'MINHA NOTICIA';
   contentDesription: string = 'Lorem ipsomd';
-  private id: string | null = '0';
+  
+  private contentId: string | null = '0';
   arrayResult: Marvel[] = [];
+  contentMarvel?: Marvel;
 
-  public marvel$!: Observable<Marvel[]>;
-  constructor(private route: ActivatedRoute, private http: HttpClient) {
-    
-  }
+  constructor(
+    private route: ActivatedRoute,
+    private service: ContentServiceService
+  ) {}
+  
   ngOnInit(): void {
-    this.marvel$ = this.http.get<Marvel[]>('http://localhost:8080/marvel');
-    this.route.paramMap.subscribe((value) => (this.id = value.get('id')));
-    this.marvel$.subscribe({
+    this.route.paramMap.subscribe(
+      (value) => (this.contentId = value.get('id'))
+    );
+    console.log(this.contentId)
+    this.getContentById(this.contentId);
+  }
+  getContentById(contentId: string | any) {
+    this.service.getContentById(contentId).subscribe({
       next: (resposta) => {
-        this.arrayResult = resposta.filter(
-          (item) => item.id.toString() == this.id
-        );
-        this.contentTitle = this.arrayResult[0].title;
-        this.contentDesription = this.arrayResult[0].description;
-        this.photoCover = this.arrayResult[0].photoUrl;
+        this.contentMarvel ={
+          description: resposta.description,
+          id: resposta.id,
+          photoUrl: resposta.photoUrl,
+          title: resposta.title
+        }
+        console.log(resposta);
       },
       error: (err) => console.log(err),
     });
   }
-
-  setValuesToComponent(id: string | null): Observable<Marvel[]> {
-    return this.http.get<Marvel[]>('http://localhost:8080/marvel');
-  }
+  
 }
+
+
+
+
+// this.ob = this.setValuesToComponent(this.id);
+    // this.route.data.subscribe((data) => {
+    //   this.arrayResult = data['contentData'];
+    //   this.contentTitle = this.arrayResult.title;
+    //   this.contentDesription = this.arrayResult.description;
+    //   this.photoCover = this.arrayResult.photoUrl;
+    // });
